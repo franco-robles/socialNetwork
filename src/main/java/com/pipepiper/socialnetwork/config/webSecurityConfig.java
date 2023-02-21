@@ -23,7 +23,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 //@EnableMethodSecurity
 @EnableWebSecurity
 public class webSecurityConfig {
-
+  
     @Bean
     public SecurityFilterChain  filterChain(HttpSecurity http) throws Exception{
         http
