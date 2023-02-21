@@ -1,2 +1,6 @@
-package com.pipepiper.socialnetwork.security;public class Security {
+package com.pipepiper.socialnetwork.security;
+
+public class Security{
+
+
 }
