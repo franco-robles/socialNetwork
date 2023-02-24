@@ -1,6 +1,7 @@
 package com.pipepiper.socialnetwork.controllers;
 
 
+import com.nimbusds.openid.connect.sdk.UserInfoResponse;
 import com.pipepiper.socialnetwork.models.User;
 import com.pipepiper.socialnetwork.repositorys.UserRepository;
 import com.pipepiper.socialnetwork.security.jwt.JwtTokenUtil;
@@ -8,11 +9,16 @@ import com.pipepiper.socialnetwork.security.payload.JwtResponse;
 import com.pipepiper.socialnetwork.security.payload.LoginRequest;
 import com.pipepiper.socialnetwork.security.payload.MessageResponse;
 import com.pipepiper.socialnetwork.security.payload.RegisterRequest;
+import com.pipepiper.socialnetwork.security.service.UserDetailsImpl;
+import jakarta.servlet.http.Cookie;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,19 +50,22 @@ public class AuthController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    //entrypoint for login
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
 
-        Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        Authentication authentication = authManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtTokenUtil.generateJwtToken(authentication);
+        ResponseCookie jwtCookie = jwtTokenUtil.generateJwtCookie(authentication);
 
-        // UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        return ResponseEntity.ok(new JwtResponse(jwt));
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        //building the cookie
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(new JwtResponse(userDetails.getUsername()));
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> register(@RequestBody RegisterRequest signUpRequest) {
