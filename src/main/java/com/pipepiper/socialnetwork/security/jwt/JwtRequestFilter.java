@@ -61,13 +61,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      * A partir de una cabecera Authorization extrae el token
      */
     private String parseJwt(HttpServletRequest request){
-        String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(BEARER)) {
-            return headerAuth.substring(BEARER.length());
-        }
-
-        return null;
-
+       String headerAuth = request.getHeader("Authorization");
+       if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(BEARER)) {
+           return headerAuth.substring(BEARER.length());
+       }
+       return null;
     }
 
 
