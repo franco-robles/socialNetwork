@@ -95,7 +95,6 @@ public class webSecurityConfig {
     }
 
 
-
     //@Bean
     //public InMemoryUserDetailsManager userDetailsService() {//usando los usuarios en memoria
     //    UserDetails user = User.builder()
