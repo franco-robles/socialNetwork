@@ -9,17 +9,17 @@ A basic spring proyect whith Login using JWT and PostgresSql
 * Spring Boot DevTools
 
 ## DataBase:
-* H2 (Solo al inicio, luego cambie a postgres).
+* H2 (only at the beginning, then i change it to postgres).
 * Postgres SQL.
 
 ## Session: 
-Para las sesiones uso un token, usando las dependencias de JWT
-Tambien genera una cookie con los datos del token( en principio solo usaba el token en local storage, pero implemente la cookie solo por probar)
+For the sessions i use a token, using JWT dependencies.
+A cookie with token data is created at login(at first I stored the token in LocalStorage, but I implemented the cookie just to test it)
 
 ## CRUD:
-Implementado el CRUD para la entity User en UserController
+The CRUD for User entity is in UserController
 
-### Siguientes Implemetaciones
+### Next 
 * implementar swagger para la documentacion
 * Agregar mas comentarios para mejor legibilidad del codigo
 coming soon...
